@@ -5,30 +5,45 @@ const isNumber = function (n) {
       guessTheNumber = () => {
         let number = Math.floor(Math.random() * 10) + 1;
         alert('Угадай число от 1 до 100');
-        const count = 10;
+        let count = 10;
         function checkType() {
           let userNumber = prompt('Введи число');
           function checkNumber() {
+            if (count === 0) {
+              if (confirm('Хотите сыграть еще?')) {
+                guessTheNumber();
+              } else {
+                alert('Прощай..');
+                guessTheNumber = null;
+              }
+            } 
             if (+userNumber > number) {
-              alert('Загаданное число меньше');
+              count--;
+              alert('Загаданное число меньше, осталось попыток :' + count);
               checkType();
             } else if (+userNumber < number) {
-              alert('Загаданное число больше');
+              count--;
+              alert('Загаданное число больше, осталось попыток :' + count);
               checkType();
             } else {
               alert('Вы угадали!');
               if (confirm('Сыграем еще?')) {
                 guessTheNumber();
+              } else { 
+                alert('Прощай..');
+                guessTheNumber = null;
               }
             }
           }
-          checkNumber();
-          if (!isNumber(userNumber) || userNumber === '' || userNumber === null) {
-            alert('Введи число!');
+          
+          if (!isNumber(+userNumber) || userNumber === '') {
             checkType();
+          } else if (userNumber === null) {
+            return;
           } else {
             checkNumber();
           }
+          checkNumber();
         }
         checkType();
       };
