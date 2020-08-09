@@ -1,18 +1,23 @@
 "use strict";
-
+const isNumber = function (n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+};
 // Переменные
-const money = +prompt('Ваш месячный доход?'),
+let money,
   income = 'фриланс',
   addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую'),
   deposit = confirm('Есть ли у вас депозит в банке?'),
   mission = 100000,
 	period = 4;
-
+const start = function () {
+  do {
+    money = prompt('Ваш месячный доход?');
+  } while (!isNumber(money));
+  return money;
+};
+start();
 // Обязательные расходы
-const expenses1 = prompt('Введите обязательную статью расходов?'),
-  amount1 = +prompt('Во сколько это обойдется?'),
-  expenses2 = prompt('Введите обязательную статью расходов?'),
-  amount2 = +prompt('Во сколько это обойдется?');
+const expenses = [];
 
 const showTypeOf = function (data) {
   console.log(typeof(data))
@@ -21,10 +26,23 @@ showTypeOf(money);
 showTypeOf(income);
 showTypeOf(deposit);  
 const getExpensesMonth = function () {
-  return amount1 + amount2;
+  let sum = 0,
+      amount = 0;
+
+  for (let i = 0; i < 4; i++) {
+
+    expenses[i] = prompt('Введите обязательную статью расходов?')
+    do {
+      amount = prompt('Во сколько это обойдется?');
+    } while (!isNumber(amount));
+    sum += +amount;
+  }
+  console.log(expenses);
+  return sum;
 };
+const expensesAmount = getExpensesMonth();
 const getAccumulatedMonth = function () {
-  return money - getExpensesMonth();
+  return money - expensesAmount;
 };
 const accumulatedMonth = getAccumulatedMonth();
 const getTargetMonth = function () {
@@ -49,6 +67,11 @@ console.log('Период равен ' + period + ' месяцев');
 console.log('Цель заработать ' + mission + ' рублей');
 console.log(addExpenses.toLowerCase().split(', '));
 console.log(budgetDay);
+if (+getTargetMonth() > 0) {
+  console.log('Цель будет достигнута через:' + getTargetMonth());
+} if(+getTargetMonth() < 0) {
+  console.log('Цель не будет достигнута');
+}
 console.log(getTargetMonth());
-console.log(getExpensesMonth());
+console.log('Расходы за месяц:' + expensesAmount);
 console.log(accumulatedMonth);
