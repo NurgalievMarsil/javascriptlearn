@@ -32,6 +32,7 @@ let money,
       return money;
     };
 
+
 let appData = {
   budget: +start(),
   income: {},
